@@ -1,0 +1,43 @@
+Dynamic Feature Modifiers Mapping
+==================================================
+
+WEATHER MODIFIERS:
+  Sun: Fire Attack ×1.5, Water Attack ×0.5
+  Rain: Water Attack ×1.5, Fire Attack ×0.5
+  Sandstorm: No effect (simplified)
+  Hail: No effect (simplified)
+  Clear: No modifiers
+
+STATUS MODIFIERS:
+  Burn: Attack ×0.5
+  Paralysis: Speed ×0.5
+  None: No modifiers
+
+TERRAIN MODIFIERS:
+  Electric Terrain: Electric moves ×1.3
+  Grassy Terrain: Grass moves ×1.3
+  Psychic Terrain: Psychic moves ×1.3
+  Misty Terrain: No effect (simplified)
+  None: No modifiers
+
+HAZARD DAMAGE:
+  Stealth Rock: 12.5% of max HP
+  Spikes: 12.5% of max HP
+  Toxic Spikes: 6.25% of max HP + poison (simplified)
+  None: No damage
+
+TYPE ADVANTAGE MODIFIER:
+  +1 advantage: +50 points
+  0 neutral: 0 points
+  -1 resisted: -50 points
+
+SCORE CALCULATION:
+  score = (weight_hp * effective_hp +
+          weight_attack * adjusted_attack +
+          weight_sp_attack * adjusted_sp_attack +
+          weight_defense * defense +
+          weight_sp_defense * sp_defense +
+          weight_speed * adjusted_speed +
+          type_advantage_modifier)
+
+  Weights: HP=0.1, Attack=0.2, Sp.Attack=0.2, Defense=0.15, Sp.Defense=0.15, Speed=0.2
