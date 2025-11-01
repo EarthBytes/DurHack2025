@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Team Battle Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pokémon Team Battle</h1>
+            <p class="subtitle">Build your team • Predict your victory</p>
+            <div class="api-config">
+                <label for="api-url">API URL:</label>
+                <input type="text" id="api-url" placeholder="http://localhost:5000/api" value="http://localhost:5000/api">
+                <button id="update-api-btn">Update</button>
+            </div>
+        </header>
+
+        <div class="teams-container">
+            <!-- Team 1 -->
+            <div class="team-section">
+                <h2>Team 1</h2>
+                <div id="team1" class="team-slots">
+                    <div class="team-slot empty" data-team="1" data-slot="0">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                    <div class="team-slot empty" data-team="1" data-slot="1">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                    <div class="team-slot empty" data-team="1" data-slot="2">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <!-- Team 2 -->
+            <div class="team-section">
+                <h2>Team 2</h2>
+                <div id="team2" class="team-slots">
+                    <div class="team-slot empty" data-team="2" data-slot="0">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                    <div class="team-slot empty" data-team="2" data-slot="1">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                    <div class="team-slot empty" data-team="2" data-slot="2">
+                        <div class="slot-placeholder">+ Add Pokemon</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Conditions -->
+        <div class="battle-conditions">
+            <h3>Battle Conditions</h3>
+            <div class="condition-grid">
+                <div class="condition-group">
+                    <label for="weather">Weather:</label>
+                    <select id="weather">
+                        <option value="Clear">Clear</option>
+                        <option value="Sun">Sun</option>
+                        <option value="Rain">Rain</option>
+                        <option value="Sandstorm">Sandstorm</option>
+                        <option value="Hail">Hail</option>
+                    </select>
+                </div>
+                <div class="condition-group">
+                    <label for="terrain">Terrain:</label>
+                    <select id="terrain">
+                        <option value="None">None</option>
+                        <option value="Electric">Electric</option>
+                        <option value="Grassy">Grassy</option>
+                        <option value="Misty">Misty</option>
+                        <option value="Psychic">Psychic</option>
+                    </select>
+                </div>
+                <div class="condition-group">
+                    <label for="hazards">Hazards:</label>
+                    <select id="hazards">
+                        <option value="None">None</option>
+                        <option value="Stealth Rock">Stealth Rock</option>
+                        <option value="Spikes">Spikes</option>
+                        <option value="Toxic Spikes">Toxic Spikes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button id="predict-btn" class="predict-button" disabled>
+            Predict Winner
+        </button>
+
+        <!-- Results -->
+        <div id="results" class="results hidden">
+            <h2>Battle Prediction</h2>
+            <div class="result-content">
+                <div class="winner-card">
+                    <div class="winner-badge" id="winner-name"></div>
+                    <div class="confidence-bar">
+                        <div class="confidence-label">Confidence: <span id="confidence"></span>%</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="confidence-bar"></div>
+                        </div>
+                    </div>
+                    <div class="probabilities">
+                        <div class="prob-item">
+                            <span>Team 1</span>
+                            <div class="prob-bar">
+                                <div class="prob-fill" id="team1-prob-bar"></div>
+                            </div>
+                            <span id="team1-prob-value"></span>
+                        </div>
+                        <div class="prob-item">
+                            <span>Team 2</span>
+                            <div class="prob-bar">
+                                <div class="prob-fill" id="team2-prob-bar"></div>
+                            </div>
+                            <span id="team2-prob-value"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+    </div>
+
+    <!-- Pokemon Selection Modal -->
+    <div id="pokemon-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Pokemon</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="pokemon-search" placeholder="Search Pokemon...">
+            </div>
+            <div id="pokemon-grid" class="pokemon-grid"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
