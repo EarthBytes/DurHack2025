@@ -40,10 +40,10 @@ Simply open `frontend/index.html` in your browser (may have CORS issues).
 - **Algorithm**: Random Forest Classifier
 - **Accuracy**: ~99.93% on test set
 - **Features**: Stats, type advantages, weather, status effects, terrain, hazards
-- **Training Data**: 49,500 battle scenarios
+- **Training Data**: 418,500 battle scenarios
 
 ### Web Interface
-- Select any two Pokémon from 11 available
+- Build teams of up to 3 Pokémon vs 3 Pokémon from 30 available
 - Adjust battle conditions:
   - Weather (Sun, Rain, Sandstorm, Hail, Clear)
   - Terrain (Electric, Grassy, Misty, Psychic)
@@ -61,7 +61,7 @@ See `algorithm/README.md` for detailed API documentation.
 
 ## How It Works
 
-1. 55 unique Pokémon pairs × 900 feature combinations = 49,500 scenarios
+1. 30 base Pokémon create 435 unique pairs × 900 feature combinations = 400,000+ scenarios
 2. Individual stats, stat differences, type advantages, dynamic conditions
 3. Random Forest learns patterns from training data
 4. Model analyses features and predicts winner with confidence
