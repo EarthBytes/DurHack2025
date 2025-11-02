@@ -1,4 +1,4 @@
-# Pokémon Battle Predictor
+# PokeOracle - Pokémon Battle Predictor
 
 A machine learning-powered Pokémon battle prediction system with a web interface.
 
