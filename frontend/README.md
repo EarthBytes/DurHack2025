@@ -1,4 +1,4 @@
-# Pokémon Battle Predictor Frontend
+# PokeOracle - Frontend
 
 A web interface for predicting Pokémon battle outcomes using machine learning.
 

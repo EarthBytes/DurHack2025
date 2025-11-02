@@ -2,7 +2,6 @@ let API_URL = 'http://localhost:5000/api';
 
 const pokemonImageMap = {
     'scryther': 'Scyther',
-    'evevee': 'Eevee',
     'diglett': 'Digglet',
     'lickitung': 'Luckitung'
 };

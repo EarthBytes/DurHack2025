@@ -1,4 +1,4 @@
-# Pokémon Battle Predictor - ML Algorithm
+# PokeOracle - ML Algorithm
 
 Machine learning model for predicting Pokémon battle outcomes.
 
