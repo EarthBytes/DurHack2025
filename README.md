@@ -17,7 +17,7 @@ This creates the trained model files (`.pkl` files).
 
 ```bash
 cd algorithm
-python api.py
+python3 api.py
 ```
 
 The API will run at `http://localhost:5000`

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Team Battle Predictor</title>
-    <link rel="stylesheet" href="style.css">
+    <title>PokeOracle - Pokemon Battle Predictor</title>
+    <link rel="stylesheet" href="style.css?v=12">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -12,13 +12,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>Pokémon Team Battle</h1>
-            <p class="subtitle">Build your team • Predict your victory</p>
-            <div class="api-config">
-                <label for="api-url">API URL:</label>
-                <input type="text" id="api-url" placeholder="http://localhost:5000/api" value="http://localhost:5000/api">
-                <button id="update-api-btn">Update</button>
+            <div class="title-container">
+                <img src="pokeball.gif" alt="Poke Ball" class="pokeball-icon left">
+                <h1>PokeOracle</h1>
+                <img src="pokeball.gif" alt="Poke Ball" class="pokeball-icon right">
             </div>
+            <p class="subtitle">Build your team • Predict your victory</p>
         </header>
 
         <div class="teams-container">
