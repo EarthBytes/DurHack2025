@@ -4,7 +4,6 @@ from predict import PokemonBattlePredictor
 import pandas as pd
 
 app = Flask(__name__)
-# Allow all cross-origin requests (for development)
 CORS(app, resources={
     r"/api/*": {
         "origins": "*",
@@ -13,7 +12,7 @@ CORS(app, resources={
     }
 })
 
-# Initialize predictor
+# Initialise predictor
 predictor = PokemonBattlePredictor()
 
 @app.route('/')
@@ -22,13 +21,10 @@ def home():
 
 @app.route('/api/predict', methods=['POST'])
 def predict_battle():
-    # API endpoint for battle prediction (supports 1v1 or team vs team)
     try:
         data = request.get_json(force=True)
 
-        # Support both old format (single Pokemon) and new format (teams)
         if 'team1' in data and 'team2' in data:
-            # Team battle mode
             team1 = data.get('team1', [])
             team2 = data.get('team2', [])
             
@@ -42,13 +38,11 @@ def predict_battle():
             terrain = data.get('terrain', 'None')
             hazards = data.get('hazards', 'None')
             
-            # Calculate team scores by averaging individual predictions
             team1_score = 0
             team2_score = 0
             team1_wins = 0
             team2_wins = 0
             
-            # Compare each Pokemon in team1 against each Pokemon in team2
             for p1 in team1:
                 p1 = p1.lower()
                 if p1 not in predictor.stats_dict:
@@ -59,7 +53,6 @@ def predict_battle():
                     if p2 not in predictor.stats_dict:
                         return jsonify({'error': f'Invalid Pokemon: {p2}'}), 400
                     
-                    # Get individual prediction
                     pred = predictor.predict(
                         pokemon1=p1,
                         pokemon2=p2,
@@ -78,7 +71,6 @@ def predict_battle():
                     else:
                         team2_wins += 1
             
-            # Average scores
             total_matchups = len(team1) * len(team2)
             team1_avg_score = team1_score / total_matchups
             team2_avg_score = team2_score / total_matchups
@@ -101,7 +93,6 @@ def predict_battle():
             })
         
         else:
-            # Legacy single Pokemon vs Pokemon format
             pokemon1 = data.get('pokemon1', '').lower()
             pokemon2 = data.get('pokemon2', '').lower()
             weather = data.get('weather', 'Clear')
@@ -136,27 +127,23 @@ def predict_battle():
 
 @app.route('/api/pokemon', methods=['GET'])
 def get_pokemon_list():
-    # Get list of available Pokemon
     pokemon_list = sorted(list(predictor.stats_dict.keys()))
     return jsonify({'pokemon': pokemon_list})
 
 @app.route('/api/pokemon/<name>', methods=['GET'])
 def get_pokemon_stats(name):
-    # Get stats for a specific Pokemon
     name = name.lower()
     if name not in predictor.stats_dict:
         return jsonify({'error': 'Pokemon not found'}), 404
 
     stats = predictor.stats_dict[name]
     
-    # Get base stats row safely
     base_stats_row = predictor.base_stats[predictor.base_stats['pokemon'] == name]
     if base_stats_row.empty:
         return jsonify({'error': 'Pokemon not found in base stats'}), 404
     
     base_stats = base_stats_row.iloc[0]
     
-    # Handle type2 - could be NaN, 'None', or actual type
     type2_val = base_stats['type2']
     if pd.isna(type2_val) or type2_val == 'None' or str(type2_val).strip() == '':
         type2_val = None

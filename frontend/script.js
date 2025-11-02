@@ -1,5 +1,20 @@
 let API_URL = 'http://localhost:5000/api';
 
+const pokemonImageMap = {
+    'scryther': 'Scyther',
+    'evevee': 'Eevee',
+    'diglett': 'Digglet',
+    'lickitung': 'Luckitung'
+};
+
+function getPokemonImageName(pokemonName) {
+    const normalized = pokemonName.toLowerCase();
+    if (pokemonImageMap[normalized]) {
+        return pokemonImageMap[normalized];
+    }
+    return pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+}
+
 function getAPIUrl() {
     const savedUrl = localStorage.getItem('api_url');
     if (savedUrl) {
@@ -74,7 +89,6 @@ async function loadPokemonList() {
         }
         
         pokemonList = data.pokemon;
-        console.log('Loaded Pokemon list:', pokemonList);
         
         // Preload all Pokemon stats
         await loadAllPokemonStats();
@@ -116,6 +130,10 @@ async function loadAllPokemonStats() {
 // Populate Pokemon selection modal
 function populatePokemonModal(filter = '') {
     const grid = document.getElementById('pokemon-grid');
+    if (!grid) {
+        console.error('Pokemon grid not found!');
+        return;
+    }
     grid.innerHTML = '';
     
     const filtered = pokemonList.filter(p => {
@@ -128,13 +146,14 @@ function populatePokemonModal(filter = '') {
         card.className = 'pokemon-card-select';
         card.onclick = () => selectPokemon(pokemon);
         
-        const data = pokemonData[pokemon];
-        const type2 = data && data.type2 ? ` / ${capitalize(data.type2)}` : '';
-        const typeText = data ? `${capitalize(data.type1)}${type2}` : '';
+        // Get the Pokemon image filename
+        const imageName = getPokemonImageName(pokemon);
+        const imagePath = `images/${imageName}.png`;
+        const displayName = pokemon.charAt(0).toUpperCase() + pokemon.slice(1);
         
         card.innerHTML = `
-            <div class="card-name">${capitalize(pokemon)}</div>
-            <div class="card-type">${typeText}</div>
+            <img src="${imagePath}" alt="${displayName}" class="pokemon-card-image" onerror="this.style.display='none'">
+            <div class="card-name">${displayName}</div>
         `;
         
         grid.appendChild(card);
@@ -145,10 +164,18 @@ function populatePokemonModal(filter = '') {
 function openPokemonModal(team, slot) {
     currentTeam = team;
     currentSlot = slot;
-    document.getElementById('pokemon-modal').classList.remove('hidden');
-    document.getElementById('pokemon-search').value = '';
+    const modal = document.getElementById('pokemon-modal');
+    if (!modal) {
+        console.error('Modal element not found!');
+        return;
+    }
+    modal.classList.remove('hidden');
+    const searchInput = document.getElementById('pokemon-search');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+    }
     populatePokemonModal();
-    document.getElementById('pokemon-search').focus();
 }
 
 // Close Pokemon selection modal
@@ -203,43 +230,48 @@ function renderTeamSlot(team, slot) {
     }
     
     slotElement.className = 'team-slot filled';
-    const type2 = data.type2 ? ` / ${capitalize(data.type2)}` : '';
+    
+    const imageName = getPokemonImageName(pokemon);
+    const imagePath = `images/${imageName}.png`;
+    const displayName = pokemon.charAt(0).toUpperCase() + pokemon.slice(1);
     
     slotElement.innerHTML = `
         <div class="pokemon-card">
             <div class="pokemon-card-header">
-                <div class="pokemon-name">${capitalize(pokemon)}</div>
+                <div class="pokemon-name">${displayName}</div>
                 <button class="remove-btn" onclick="removePokemon(${team}, ${slot}); event.stopPropagation();">Remove</button>
             </div>
-            <div class="pokemon-type">Type: ${capitalize(data.type1)}${type2}</div>
-            <div class="pokemon-stats">
-                <div class="stat-row">
-                    <span class="stat-label">HP:</span>
-                    <span class="stat-value">${data.stats.hp}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Attack:</span>
-                    <span class="stat-value">${data.stats.attack}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Defense:</span>
-                    <span class="stat-value">${data.stats.defense}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Sp. Attack:</span>
-                    <span class="stat-value">${data.stats.sp_attack}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Sp. Defense:</span>
-                    <span class="stat-value">${data.stats.sp_defense}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Speed:</span>
-                    <span class="stat-value">${data.stats.speed}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Total:</span>
-                    <span class="stat-value">${data.stats.total}</span>
+            <div class="pokemon-card-content">
+                <img src="${imagePath}" alt="${displayName}" class="pokemon-team-image" onerror="console.error('Failed to load image:', this.src);">
+                <div class="pokemon-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">HP:</span>
+                        <span class="stat-value">${data.stats.hp}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Attack:</span>
+                        <span class="stat-value">${data.stats.attack}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Defense:</span>
+                        <span class="stat-value">${data.stats.defense}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Sp. Attack:</span>
+                        <span class="stat-value">${data.stats.sp_attack}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Sp. Defense:</span>
+                        <span class="stat-value">${data.stats.sp_defense}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Speed:</span>
+                        <span class="stat-value">${data.stats.speed}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Total:</span>
+                        <span class="stat-value">${data.stats.total}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -348,30 +380,12 @@ function hideError() {
     document.getElementById('error').classList.add('hidden');
 }
 
-// Capitalise first letter
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // Initialise on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Set API URL input value
-    const apiUrlInput = document.getElementById('api-url');
-    apiUrlInput.value = API_URL;
-    
-    // API URL update handler
-    document.getElementById('update-api-btn').addEventListener('click', () => {
-        const newUrl = apiUrlInput.value.trim();
-        setAPIUrl(newUrl);
-        apiUrlInput.value = API_URL;
-    });
-    
-    apiUrlInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            document.getElementById('update-api-btn').click();
-        }
-    });
-    
     // Initialise team slots
     for (let team = 1; team <= 2; team++) {
         for (let slot = 0; slot < 3; slot++) {

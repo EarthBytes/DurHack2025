@@ -1,5 +1,4 @@
 Dynamic Feature Modifiers Mapping
-==================================================
 
 WEATHER MODIFIERS:
   Sun: Fire Attack ×1.5, Water Attack ×0.5
